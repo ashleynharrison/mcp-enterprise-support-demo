@@ -1,0 +1,28 @@
+{
+  "name": "mcp-enterprise-support-demo",
+  "version": "1.0.0",
+  "description": "MCP Server demonstrating personalized enterprise support with external data integration",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "mcp-support": "./build/index.js"
+  },
+  "files": ["build"],
+  "scripts": {
+    "build": "tsc && chmod 755 build/index.js",
+    "prepare": "npm run build",
+    "watch": "tsc --watch",
+    "inspector": "npx @modelcontextprotocol/inspector build/index.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "zod": "^3.25.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.24",
+    "typescript": "^5.3.3"
+  },
+  "keywords": ["mcp", "anthropic", "support", "enterprise", "claude"],
+  "author": "Ashley Harrison",
+  "license": "MIT"
+}

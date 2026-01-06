@@ -1,0 +1,1242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCP Enterprise Support Demo | Ashley Harrison</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --anthropic-coral: #D4A27F;
+            --anthropic-tan: #CC785C;
+            --anthropic-black: #191919;
+            --anthropic-cream: #FAF9F5;
+            --accent-blue: #3B82F6;
+            --accent-green: #10B981;
+            --accent-purple: #8B5CF6;
+            --code-bg: #1a1a2e;
+            --card-shadow: 0 4px 24px rgba(0,0,0,0.08);
+            --card-hover-shadow: 0 12px 48px rgba(0,0,0,0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--anthropic-cream);
+            color: var(--anthropic-black);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Animated background pattern */
+        .bg-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: -1;
+            opacity: 0.4;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(212, 162, 127, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(204, 120, 92, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 40% 80%, rgba(139, 92, 246, 0.08) 0%, transparent 40%);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 20px 0;
+            background: rgba(250, 249, 245, 0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(25, 25, 25, 0.08);
+        }
+
+        nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-weight: 800;
+            font-size: 1.1rem;
+            color: var(--anthropic-black);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-logo-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--anthropic-coral), var(--anthropic-tan));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--anthropic-black);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+        }
+
+        .nav-links a:hover {
+            opacity: 1;
+        }
+
+        .nav-cta {
+            background: var(--anthropic-black);
+            color: var(--anthropic-cream) !important;
+            padding: 10px 20px;
+            border-radius: 8px;
+            opacity: 1 !important;
+            transition: transform 0.2s, box-shadow 0.2s !important;
+        }
+
+        .nav-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 120px 0 80px;
+            position: relative;
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(139, 92, 246, 0.1);
+            color: var(--accent-purple);
+            padding: 8px 16px;
+            border-radius: 100px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 24px;
+            animation: fadeInUp 0.6s ease;
+        }
+
+        .hero-badge::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: var(--accent-purple);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            animation: fadeInUp 0.6s ease 0.1s both;
+        }
+
+        .hero h1 span {
+            background: linear-gradient(135deg, var(--anthropic-tan), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-description {
+            font-size: 1.15rem;
+            color: #555;
+            margin-bottom: 32px;
+            max-width: 500px;
+            animation: fadeInUp 0.6s ease 0.2s both;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 16px;
+            animation: fadeInUp 0.6s ease 0.3s both;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 28px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--anthropic-black);
+            color: var(--anthropic-cream);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--anthropic-black);
+            border: 2px solid rgba(25,25,25,0.2);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--anthropic-black);
+            background: rgba(25,25,25,0.05);
+        }
+
+        /* Hero Visual */
+        .hero-visual {
+            position: relative;
+            animation: fadeInUp 0.6s ease 0.4s both;
+        }
+
+        .terminal-window {
+            background: var(--code-bg);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--card-hover-shadow), 0 0 0 1px rgba(255,255,255,0.1);
+            transform: perspective(1000px) rotateY(-5deg) rotateX(2deg);
+            transition: transform 0.4s ease;
+        }
+
+        .terminal-window:hover {
+            transform: perspective(1000px) rotateY(0deg) rotateX(0deg);
+        }
+
+        .terminal-header {
+            background: rgba(255,255,255,0.05);
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .terminal-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .terminal-dot.red { background: #ff5f56; }
+        .terminal-dot.yellow { background: #ffbd2e; }
+        .terminal-dot.green { background: #27ca40; }
+
+        .terminal-title {
+            color: rgba(255,255,255,0.5);
+            font-size: 0.8rem;
+            margin-left: 8px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .terminal-body {
+            padding: 24px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            line-height: 1.8;
+            color: #e4e4e7;
+            max-height: 400px;
+            overflow: hidden;
+        }
+
+        .terminal-line {
+            opacity: 0;
+            animation: typeLine 0.5s ease forwards;
+        }
+
+        .terminal-line:nth-child(1) { animation-delay: 0.5s; }
+        .terminal-line:nth-child(2) { animation-delay: 1s; }
+        .terminal-line:nth-child(3) { animation-delay: 1.5s; }
+        .terminal-line:nth-child(4) { animation-delay: 2s; }
+        .terminal-line:nth-child(5) { animation-delay: 2.5s; }
+        .terminal-line:nth-child(6) { animation-delay: 3s; }
+        .terminal-line:nth-child(7) { animation-delay: 3.5s; }
+
+        @keyframes typeLine {
+            from { opacity: 0; transform: translateX(-10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .terminal-prompt {
+            color: var(--accent-green);
+        }
+
+        .terminal-command {
+            color: #fff;
+        }
+
+        .terminal-output {
+            color: rgba(255,255,255,0.7);
+            padding-left: 16px;
+        }
+
+        .terminal-json {
+            color: var(--anthropic-coral);
+        }
+
+        .terminal-string {
+            color: var(--accent-green);
+        }
+
+        .terminal-key {
+            color: var(--accent-blue);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Problem Section */
+        .section {
+            padding: 100px 0;
+        }
+
+        .section-label {
+            display: inline-block;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--anthropic-tan);
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 4vw, 2.75rem);
+            font-weight: 800;
+            margin-bottom: 24px;
+            line-height: 1.2;
+        }
+
+        .section-description {
+            font-size: 1.1rem;
+            color: #555;
+            max-width: 700px;
+            margin-bottom: 48px;
+        }
+
+        /* Problem Cards */
+        .problem-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .problem-card {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: var(--card-shadow);
+            border: 1px solid rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+
+        .problem-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--card-hover-shadow);
+        }
+
+        .problem-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, rgba(255,87,87,0.1), rgba(255,87,87,0.05));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+
+        .problem-card h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .problem-card p {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        /* Solution Section */
+        .solution-section {
+            background: var(--anthropic-black);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .solution-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(212, 162, 127, 0.15) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .solution-section .section-label {
+            color: var(--anthropic-coral);
+        }
+
+        .solution-section .section-description {
+            color: rgba(255,255,255,0.7);
+        }
+
+        /* Architecture Diagram */
+        .architecture {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 48px;
+            margin-top: 48px;
+        }
+
+        .architecture-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: rgba(255,255,255,0.5);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 32px;
+            text-align: center;
+        }
+
+        .architecture-flow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+
+        .arch-box {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 12px;
+            padding: 24px 32px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .arch-box:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: var(--anthropic-coral);
+            transform: translateY(-4px);
+        }
+
+        .arch-box-icon {
+            font-size: 2rem;
+            margin-bottom: 12px;
+        }
+
+        .arch-box-label {
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 4px;
+        }
+
+        .arch-box-sub {
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.5);
+        }
+
+        .arch-arrow {
+            font-size: 1.5rem;
+            color: rgba(255,255,255,0.3);
+        }
+
+        /* Tools Section */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-top: 48px;
+        }
+
+        .tool-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 28px;
+            transition: all 0.3s ease;
+        }
+
+        .tool-card:hover {
+            background: rgba(255,255,255,0.06);
+            border-color: rgba(255,255,255,0.2);
+            transform: translateY(-4px);
+        }
+
+        .tool-name {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--accent-green);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tool-name::before {
+            content: '⚡';
+        }
+
+        .tool-description {
+            color: rgba(255,255,255,0.7);
+            font-size: 0.9rem;
+            margin-bottom: 16px;
+        }
+
+        .tool-returns {
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.5);
+        }
+
+        .tool-returns span {
+            color: var(--anthropic-coral);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Demo Section */
+        .demo-section {
+            background: white;
+        }
+
+        .demo-container {
+            background: linear-gradient(135deg, #f8f9fa 0%, #fff 100%);
+            border-radius: 24px;
+            padding: 48px;
+            border: 1px solid rgba(0,0,0,0.08);
+            margin-top: 48px;
+        }
+
+        .demo-placeholder {
+            background: var(--code-bg);
+            border-radius: 16px;
+            aspect-ratio: 16/9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255,255,255,0.7);
+            gap: 16px;
+        }
+
+        .demo-placeholder-icon {
+            font-size: 4rem;
+            opacity: 0.5;
+        }
+
+        .demo-placeholder-text {
+            font-size: 1.1rem;
+        }
+
+        .demo-placeholder-sub {
+            font-size: 0.9rem;
+            opacity: 0.5;
+        }
+
+        /* Scenario Cards */
+        .scenario-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 24px;
+            margin-top: 48px;
+        }
+
+        .scenario-card {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: var(--card-shadow);
+            border: 1px solid rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+
+        .scenario-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--card-hover-shadow);
+        }
+
+        .scenario-number {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--anthropic-coral), var(--anthropic-tan));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: white;
+            font-size: 0.9rem;
+            margin-bottom: 16px;
+        }
+
+        .scenario-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .scenario-description {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 16px;
+        }
+
+        .scenario-flow {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 16px;
+            font-size: 0.85rem;
+        }
+
+        .scenario-step {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 8px 0;
+        }
+
+        .scenario-step:not(:last-child) {
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .scenario-step-num {
+            width: 20px;
+            height: 20px;
+            background: var(--anthropic-black);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .scenario-step-text {
+            color: #555;
+        }
+
+        .scenario-step-text code {
+            background: rgba(139, 92, 246, 0.1);
+            color: var(--accent-purple);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+        }
+
+        /* Code Sample Section */
+        .code-section {
+            background: linear-gradient(180deg, var(--anthropic-cream) 0%, #fff 100%);
+        }
+
+        .code-container {
+            background: var(--code-bg);
+            border-radius: 16px;
+            overflow: hidden;
+            margin-top: 48px;
+            box-shadow: var(--card-hover-shadow);
+        }
+
+        .code-header {
+            background: rgba(255,255,255,0.05);
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .code-filename {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.7);
+        }
+
+        .code-lang {
+            font-size: 0.75rem;
+            padding: 4px 10px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 4px;
+            color: rgba(255,255,255,0.6);
+        }
+
+        .code-content {
+            padding: 24px;
+            overflow-x: auto;
+        }
+
+        .code-content pre {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            line-height: 1.7;
+            color: #e4e4e7;
+            margin: 0;
+        }
+
+        .code-content .comment { color: #6A9955; }
+        .code-content .keyword { color: #569CD6; }
+        .code-content .string { color: #CE9178; }
+        .code-content .function { color: #DCDCAA; }
+        .code-content .type { color: #4EC9B0; }
+        .code-content .number { color: #B5CEA8; }
+
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, var(--anthropic-black) 0%, #2d2d2d 100%);
+            color: white;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.5;
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-title {
+            font-size: clamp(2rem, 4vw, 2.5rem);
+            font-weight: 800;
+            margin-bottom: 16px;
+        }
+
+        .cta-description {
+            font-size: 1.1rem;
+            color: rgba(255,255,255,0.7);
+            max-width: 600px;
+            margin: 0 auto 32px;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-light {
+            background: white;
+            color: var(--anthropic-black);
+        }
+
+        .btn-light:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(255,255,255,0.2);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: white;
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+
+        .btn-outline:hover {
+            border-color: white;
+            background: rgba(255,255,255,0.1);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--anthropic-black);
+            color: rgba(255,255,255,0.6);
+            padding: 48px 0;
+            text-align: center;
+        }
+
+        .footer-name {
+            font-weight: 700;
+            color: white;
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+        }
+
+        .footer-title {
+            font-size: 0.9rem;
+            margin-bottom: 24px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 24px;
+            justify-content: center;
+            margin-bottom: 24px;
+        }
+
+        .footer-links a {
+            color: rgba(255,255,255,0.6);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: var(--anthropic-coral);
+        }
+
+        .footer-note {
+            font-size: 0.8rem;
+            opacity: 0.5;
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .hero-description {
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .hero-buttons {
+                justify-content: center;
+            }
+
+            .hero-visual {
+                order: -1;
+            }
+
+            .terminal-window {
+                transform: none;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .architecture-flow {
+                flex-direction: column;
+            }
+
+            .arch-arrow {
+                transform: rotate(90deg);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .scenario-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-pattern"></div>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="container">
+            <a href="#" class="nav-logo">
+                <div class="nav-logo-icon">🔌</div>
+                MCP Demo
+            </a>
+            <ul class="nav-links">
+                <li><a href="#problem">Problem</a></li>
+                <li><a href="#solution">Solution</a></li>
+                <li><a href="#demo">Demo</a></li>
+                <li><a href="#code">Code</a></li>
+                <li><a href="https://github.com/ashleyharrison" class="nav-cta">View GitHub</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <div class="hero-badge">Portfolio Project</div>
+                    <h1>MCP Enterprise<br><span>Support Demo</span></h1>
+                    <p class="hero-description">
+                        A Model Context Protocol server demonstrating how AI can leverage external data sources to provide personalized enterprise support at scale.
+                    </p>
+                    <div class="hero-buttons">
+                        <a href="#demo" class="btn btn-primary">
+                            Watch Demo
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                        </a>
+                        <a href="https://github.com/ashleyharrison/mcp-support-demo" class="btn btn-secondary">
+                            View Source
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <div class="terminal-window">
+                        <div class="terminal-header">
+                            <div class="terminal-dot red"></div>
+                            <div class="terminal-dot yellow"></div>
+                            <div class="terminal-dot green"></div>
+                            <span class="terminal-title">mcp-support-demo — node</span>
+                        </div>
+                        <div class="terminal-body">
+                            <div class="terminal-line"><span class="terminal-prompt">claude →</span> <span class="terminal-command">lookup_customer("Acme Corporation")</span></div>
+                            <div class="terminal-line terminal-output">{</div>
+                            <div class="terminal-line terminal-output">  <span class="terminal-key">"tier"</span>: <span class="terminal-string">"Enterprise"</span>,</div>
+                            <div class="terminal-line terminal-output">  <span class="terminal-key">"contractValue"</span>: <span class="terminal-json">"$125,000"</span>,</div>
+                            <div class="terminal-line terminal-output">  <span class="terminal-key">"apiUsage"</span>: <span class="terminal-json">90%</span>,</div>
+                            <div class="terminal-line terminal-output">  <span class="terminal-key">"flags"</span>: [<span class="terminal-string">"HIGH_VALUE"</span>, <span class="terminal-string">"EXPANSION_OPPORTUNITY"</span>]</div>
+                            <div class="terminal-line terminal-output">}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Problem Section -->
+    <section class="section" id="problem">
+        <div class="container">
+            <div class="section-label">The Challenge</div>
+            <h2 class="section-title">Enterprise support without context<br>creates friction at scale</h2>
+            <p class="section-description">
+                Traditional support systems force agents to manually check multiple systems before every response. This slows resolution, creates inconsistent experiences, and makes personalization nearly impossible.
+            </p>
+            <div class="problem-grid">
+                <div class="problem-card">
+                    <div class="problem-icon">🔄</div>
+                    <h3>Context Switching</h3>
+                    <p>Agents toggle between CRM, ticketing, billing, and usage dashboards before they can even start drafting a response.</p>
+                </div>
+                <div class="problem-card">
+                    <div class="problem-icon">⏱️</div>
+                    <h3>Slow Personalization</h3>
+                    <p>By the time an agent gathers customer context, valuable minutes have passed. Enterprise customers expect faster.</p>
+                </div>
+                <div class="problem-card">
+                    <div class="problem-icon">📊</div>
+                    <h3>Inconsistent Treatment</h3>
+                    <p>Without automated tier awareness, a $500K strategic account might get the same response template as a free trial.</p>
+                </div>
+                <div class="problem-card">
+                    <div class="problem-icon">🚨</div>
+                    <h3>Missed Escalations</h3>
+                    <p>SLA requirements vary by tier, but agents must manually remember which customers need faster response times.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Solution Section -->
+    <section class="section solution-section" id="solution">
+        <div class="container">
+            <div class="section-label">The Solution</div>
+            <h2 class="section-title">AI that pulls context<br>before drafting responses</h2>
+            <p class="section-description">
+                Using Anthropic's Model Context Protocol, Claude can connect directly to customer data systems—pulling account details, ticket history, and escalation rules in real-time.
+            </p>
+
+            <div class="architecture">
+                <div class="architecture-title">System Architecture</div>
+                <div class="architecture-flow">
+                    <div class="arch-box">
+                        <div class="arch-box-icon">💬</div>
+                        <div class="arch-box-label">Claude Desktop</div>
+                        <div class="arch-box-sub">MCP Client</div>
+                    </div>
+                    <div class="arch-arrow">→</div>
+                    <div class="arch-box">
+                        <div class="arch-box-icon">🔌</div>
+                        <div class="arch-box-label">MCP Server</div>
+                        <div class="arch-box-sub">This Project</div>
+                    </div>
+                    <div class="arch-arrow">→</div>
+                    <div class="arch-box">
+                        <div class="arch-box-icon">🗄️</div>
+                        <div class="arch-box-label">Data Sources</div>
+                        <div class="arch-box-sub">CRM • Tickets • Billing</div>
+                    </div>
+                </div>
+            </div>
+
+            <h3 style="color: white; font-size: 1.3rem; margin-top: 64px; margin-bottom: 8px;">Available Tools</h3>
+            <p style="color: rgba(255,255,255,0.6); margin-bottom: 24px;">Four MCP tools that give Claude real-time access to customer context</p>
+            
+            <div class="tools-grid">
+                <div class="tool-card">
+                    <div class="tool-name">lookup_customer</div>
+                    <div class="tool-description">Retrieves complete customer profile including tier, contract value, API usage, account flags, known issues, and support history.</div>
+                    <div class="tool-returns">Returns: <span>CustomerProfile</span></div>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-name">get_open_tickets</div>
+                    <div class="tool-description">Fetches all open/pending tickets for a customer with age, priority, assignee, and tags for context.</div>
+                    <div class="tool-returns">Returns: <span>Ticket[]</span></div>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-name">get_response_guidance</div>
+                    <div class="tool-description">Generates personalized response templates with tone guidance, escalation paths, and pre-filled customer context.</div>
+                    <div class="tool-returns">Returns: <span>ResponseGuidance</span></div>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-name">check_escalation_rules</div>
+                    <div class="tool-description">Returns SLA requirements by tier including response time targets and auto-escalation triggers.</div>
+                    <div class="tool-returns">Returns: <span>EscalationRule</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Demo Section -->
+    <section class="section demo-section" id="demo">
+        <div class="container">
+            <div class="section-label">See It In Action</div>
+            <h2 class="section-title">Watch Claude use MCP<br>for personalized support</h2>
+            <p class="section-description">
+                This demo shows how Claude automatically pulls customer context before drafting a response—no manual lookups required.
+            </p>
+
+            <div class="demo-container">
+                <div class="demo-placeholder">
+                    <div class="demo-placeholder-icon">▶️</div>
+                    <div class="demo-placeholder-text">Video Demo Coming Soon</div>
+                    <div class="demo-placeholder-sub">Recording walkthrough with Claude Desktop</div>
+                </div>
+            </div>
+
+            <h3 style="font-size: 1.3rem; margin-top: 64px; margin-bottom: 8px;">Example Scenarios</h3>
+            <p style="color: #666; margin-bottom: 24px;">How the MCP server transforms common support situations</p>
+
+            <div class="scenario-grid">
+                <div class="scenario-card">
+                    <div class="scenario-number">1</div>
+                    <div class="scenario-title">Enterprise Rate Limiting Complaint</div>
+                    <div class="scenario-description">
+                        User asks Claude: "Help me respond to Acme Corporation's rate limiting complaint"
+                    </div>
+                    <div class="scenario-flow">
+                        <div class="scenario-step">
+                            <div class="scenario-step-num">1</div>
+                            <div class="scenario-step-text">Claude calls <code>lookup_customer</code> → sees Enterprise tier, 90% API usage, known rate limiting issue</div>
+                        </div>
+                        <div class="scenario-step">
+                            <div class="scenario-step-num">2</div>
+                            <div class="scenario-step-text">Calls <code>get_open_tickets</code> → finds existing ticket from 3 days ago</div>
+                        </div>
+                        <div class="scenario-step">
+                            <div class="scenario-step-num">3</div>
+                            <div class="scenario-step-text">Calls <code>get_response_guidance</code> → receives personalized template acknowledging ongoing issue</div>
+                        </div>
+                        <div class="scenario-step">
+                            <div class="scenario-step-num">4</div>
+                            <div class="scenario-step-text">Drafts response that references their usage patterns and offers specific solutions</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="scenario-card">
+                    <div class="scenario-number">2</div>
+                    <div class="scenario-title">Strategic Account Escalation</div>
+                    <div class="scenario-description">
+                        User asks Claude: "Global Finance Ltd is upset about their deployment. How should I handle this?"
+                    </div>
+                    <div class="scenario-flow">
+                        <div class="scenario-step">
+                            <div class="scenario-step-num">1</div>
+                            <div class="scenario-step-text">Claude calls <code>lookup_customer</code> → sees STRATEGIC_ACCOUNT flag, $500K contract</div>
+                        </div>
+                        <div class="scenario-step">
+                            <div class="scenario-step-num">2</div>
+                            <div class="scenario-step-text">Calls <code>check_escalation_rules</code> → Enterprise Plus requires 1-hour response</div>
+                        </div>
+                        <div class="scenario-step">
+                            <div class="scenario-step-num">3</div>
+                            <div class="scenario-step-text">Calls <code>get_response_guidance</code> with issue_type "escalation"</div>
+                        </div>
+                        <div class="scenario-step">
+                            <div class="scenario-step-num">4</div>
+                            <div class="scenario-step-text">Provides guidance to immediately loop in account manager with specific response language</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Code Section -->
+    <section class="section code-section" id="code">
+        <div class="container">
+            <div class="section-label">Under The Hood</div>
+            <h2 class="section-title">Built with TypeScript<br>and the MCP SDK</h2>
+            <p class="section-description">
+                The server uses Anthropic's official TypeScript SDK to define tools that Claude can call. Each tool connects to a mock database that simulates real enterprise data.
+            </p>
+
+            <div class="code-container">
+                <div class="code-header">
+                    <span class="code-filename">src/index.ts</span>
+                    <span class="code-lang">TypeScript</span>
+                </div>
+                <div class="code-content">
+                    <pre><span class="comment">/**
+ * Tool: lookup_customer
+ * Retrieves customer account information for personalized support
+ */</span>
+<span class="keyword">server</span>.<span class="function">tool</span>(
+  <span class="string">"lookup_customer"</span>,
+  {
+    query: <span class="type">z</span>.<span class="function">string</span>().<span class="function">describe</span>(<span class="string">"Company name or customer ID"</span>)
+  },
+  <span class="keyword">async</span> ({ query }) => {
+    <span class="keyword">const</span> customer = database.customers.<span class="function">find</span>(
+      c => c.company.<span class="function">toLowerCase</span>().<span class="function">includes</span>(query.<span class="function">toLowerCase</span>())
+    );
+
+    <span class="comment">// Build personalized context with support guidance</span>
+    <span class="keyword">const</span> context = {
+      customer: {
+        tier: customer.tier,
+        contractValue: <span class="string">`$</span>${customer.contractValue.<span class="function">toLocaleString</span>()}<span class="string">`</span>,
+        apiUsage: customer.apiUsage,
+        flags: customer.flags,
+        knownIssues: customer.knownIssues
+      },
+      supportGuidance: <span class="function">generateSupportGuidance</span>(customer)
+    };
+
+    <span class="keyword">return</span> { content: [{ type: <span class="string">"text"</span>, text: <span class="type">JSON</span>.<span class="function">stringify</span>(context) }] };
+  }
+);</pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="section cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2 class="cta-title">Want to see the full implementation?</h2>
+                <p class="cta-description">
+                    The complete source code is available on GitHub, including setup instructions for testing with Claude Desktop.
+                </p>
+                <div class="cta-buttons">
+                    <a href="https://github.com/ashleyharrison/mcp-support-demo" class="btn btn-light">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                        View on GitHub
+                    </a>
+                    <a href="mailto:ashley8harrison@gmail.com" class="btn btn-outline">
+                        Get in Touch
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-name">Ashley Harrison</div>
+            <div class="footer-title">Program Operations Specialist at Webflow</div>
+            <div class="footer-links">
+                <a href="mailto:ashley8harrison@gmail.com">Email</a>
+                <a href="https://linkedin.com/in/ashleyharrison">LinkedIn</a>
+                <a href="https://github.com/ashleyharrison">GitHub</a>
+            </div>
+            <div class="footer-note">
+                Built as a portfolio project for Anthropic Support Operations Specialist application
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

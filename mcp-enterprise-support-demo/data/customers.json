@@ -1,0 +1,174 @@
+{
+  "customers": [
+    {
+      "id": "ENT-001",
+      "company": "Acme Corporation",
+      "tier": "Enterprise",
+      "accountManager": "Sarah Chen",
+      "contractValue": 125000,
+      "renewalDate": "2025-06-15",
+      "products": ["Claude API", "Claude for Enterprise", "Custom Fine-tuning"],
+      "apiUsage": {
+        "monthlyTokens": 45000000,
+        "monthlyLimit": 50000000,
+        "utilizationPercent": 90
+      },
+      "knownIssues": ["Rate limiting concerns during peak hours", "Pending SSO integration"],
+      "supportHistory": {
+        "totalTickets": 23,
+        "avgResolutionHours": 4.2,
+        "csat": 4.8
+      },
+      "contacts": [
+        {"name": "Mike Johnson", "role": "CTO", "email": "mike@acme.com", "primary": true},
+        {"name": "Lisa Park", "role": "Engineering Lead", "email": "lisa@acme.com", "primary": false}
+      ],
+      "flags": ["HIGH_VALUE", "EXPANSION_OPPORTUNITY"]
+    },
+    {
+      "id": "ENT-002", 
+      "company": "TechStart Inc",
+      "tier": "Growth",
+      "accountManager": "David Kim",
+      "contractValue": 24000,
+      "renewalDate": "2025-03-01",
+      "products": ["Claude API"],
+      "apiUsage": {
+        "monthlyTokens": 8000000,
+        "monthlyLimit": 10000000,
+        "utilizationPercent": 80
+      },
+      "knownIssues": [],
+      "supportHistory": {
+        "totalTickets": 7,
+        "avgResolutionHours": 6.1,
+        "csat": 4.5
+      },
+      "contacts": [
+        {"name": "Anna Williams", "role": "Founder", "email": "anna@techstart.io", "primary": true}
+      ],
+      "flags": ["APPROACHING_RENEWAL"]
+    },
+    {
+      "id": "ENT-003",
+      "company": "Global Finance Ltd",
+      "tier": "Enterprise Plus",
+      "accountManager": "Sarah Chen",
+      "contractValue": 500000,
+      "renewalDate": "2025-12-01",
+      "products": ["Claude API", "Claude for Enterprise", "Dedicated Infrastructure", "Priority Support"],
+      "apiUsage": {
+        "monthlyTokens": 180000000,
+        "monthlyLimit": 200000000,
+        "utilizationPercent": 90
+      },
+      "knownIssues": ["Custom model deployment pending", "Compliance documentation request in progress"],
+      "supportHistory": {
+        "totalTickets": 45,
+        "avgResolutionHours": 2.1,
+        "csat": 4.9
+      },
+      "contacts": [
+        {"name": "Robert Chang", "role": "VP Engineering", "email": "rchang@globalfinance.com", "primary": true},
+        {"name": "Jennifer Smith", "role": "Security Lead", "email": "jsmith@globalfinance.com", "primary": false}
+      ],
+      "flags": ["STRATEGIC_ACCOUNT", "HIGH_VALUE", "COMPLIANCE_SENSITIVE"]
+    },
+    {
+      "id": "STD-001",
+      "company": "Small Agency Co",
+      "tier": "Standard",
+      "accountManager": null,
+      "contractValue": 2400,
+      "renewalDate": "2025-02-15",
+      "products": ["Claude API"],
+      "apiUsage": {
+        "monthlyTokens": 500000,
+        "monthlyLimit": 1000000,
+        "utilizationPercent": 50
+      },
+      "knownIssues": [],
+      "supportHistory": {
+        "totalTickets": 2,
+        "avgResolutionHours": 12.0,
+        "csat": 4.0
+      },
+      "contacts": [
+        {"name": "Tom Brown", "role": "Owner", "email": "tom@smallagency.co", "primary": true}
+      ],
+      "flags": []
+    }
+  ],
+  "tickets": [
+    {
+      "id": "TKT-2024-001",
+      "customerId": "ENT-001",
+      "subject": "Rate limiting during batch processing",
+      "status": "open",
+      "priority": "high",
+      "createdAt": "2024-12-28T10:30:00Z",
+      "lastUpdated": "2024-12-30T14:15:00Z",
+      "assignee": "Support Team",
+      "description": "Experiencing 429 errors when processing large batches of documents. Need guidance on optimal request pacing.",
+      "tags": ["rate-limiting", "api", "batch-processing"]
+    },
+    {
+      "id": "TKT-2024-002",
+      "customerId": "ENT-001",
+      "subject": "SSO integration timeline",
+      "status": "pending",
+      "priority": "medium",
+      "createdAt": "2024-12-20T09:00:00Z",
+      "lastUpdated": "2024-12-27T11:00:00Z",
+      "assignee": "Enterprise Team",
+      "description": "Following up on SAML SSO integration. Security team needs timeline for compliance audit.",
+      "tags": ["sso", "integration", "security"]
+    },
+    {
+      "id": "TKT-2024-003",
+      "customerId": "ENT-003",
+      "subject": "Custom model deployment status",
+      "status": "in_progress",
+      "priority": "high",
+      "createdAt": "2024-12-15T08:00:00Z",
+      "lastUpdated": "2024-12-30T16:00:00Z",
+      "assignee": "ML Engineering",
+      "description": "Requesting update on fine-tuned model deployment to dedicated infrastructure.",
+      "tags": ["custom-model", "deployment", "enterprise"]
+    },
+    {
+      "id": "TKT-2024-004",
+      "customerId": "ENT-002",
+      "subject": "Billing question - usage calculation",
+      "status": "open",
+      "priority": "low",
+      "createdAt": "2024-12-29T15:45:00Z",
+      "lastUpdated": "2024-12-29T15:45:00Z",
+      "assignee": "Billing Team",
+      "description": "Need clarification on how input vs output tokens are calculated for billing.",
+      "tags": ["billing", "tokens", "pricing"]
+    }
+  ],
+  "escalationRules": {
+    "Enterprise Plus": {
+      "maxResponseTime": "1 hour",
+      "escalateTo": "Senior Support + Account Manager",
+      "autoEscalateAfter": "2 hours"
+    },
+    "Enterprise": {
+      "maxResponseTime": "4 hours",
+      "escalateTo": "Account Manager",
+      "autoEscalateAfter": "8 hours"
+    },
+    "Growth": {
+      "maxResponseTime": "8 hours",
+      "escalateTo": "Team Lead",
+      "autoEscalateAfter": "24 hours"
+    },
+    "Standard": {
+      "maxResponseTime": "24 hours",
+      "escalateTo": "Team Lead",
+      "autoEscalateAfter": "48 hours"
+    }
+  }
+}
