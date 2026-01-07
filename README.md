@@ -8,7 +8,7 @@
 
 **A Model Context Protocol server demonstrating AI-native enterprise support personalization**
 
-[View Demo](https://ashleyharrison.github.io/mcp-enterprise-support-demo) · [Documentation](#usage) · [Report Bug](https://github.com/ashleyharrison/mcp-enterprise-support-demo/issues)
+[View Demo](https://ashleynharrison.github.io/mcp-enterprise-support-demo) · [Documentation](#usage) · [Report Bug](https://github.com/ashleynharrison/mcp-enterprise-support-demo/issues)
 
 </div>
 
@@ -86,7 +86,7 @@ In production, the data sources would connect to real systems (Salesforce, Inter
 
 ```bash
 # Clone the repository
-git clone https://github.com/ashleyharrison/mcp-enterprise-support-demo.git
+git clone https://github.com/ashleynharrison/mcp-enterprise-support-demo.git
 cd mcp-enterprise-support-demo
 
 # Install dependencies
@@ -265,7 +265,7 @@ This project demonstrates:
 Built as a portfolio project demonstrating practical understanding of AI-native support systems and the Model Context Protocol.
 
 - 📧 ashley8harrison@gmail.com
-- 💼 [LinkedIn](https://linkedin.com/in/ashleyharrison)
+- 💼 [LinkedIn](https://linkedin.com/in/harrisonashleyn)
 
 ---
 
